@@ -13,6 +13,8 @@ services:
       - 8080:80
     networks:
       - environment
+    environment:
+      - PRODUCTION=$PRODUCTION
 
 networks:
   environment:
