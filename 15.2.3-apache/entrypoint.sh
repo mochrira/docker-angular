@@ -1,5 +1,8 @@
-NG_CONFIGURATION=${NG_CONFIGURATION:-development}
 PRODUCTION=${PRODUCTION:-NO}
+REINSTALL_MODULES=${REINSTALL_MODULES:-NO}
+
+NG_CONFIGURATION=${NG_CONFIGURATION:-development}
+NG_REBUILD=${NG_REBUILD:-NO}
 
 DEFAULT_FILE_CONTENT="<!DOCTYPE html>
 <html lang=\"en\">
@@ -25,12 +28,18 @@ if [ ! -f "angular.json" ]; then
     fi
 fi
 
+if [ -d "./.docker" ]; then
+    if [ -f "./.docker/before_build.js" ]; then
+        if [ $PRODUCTION == "YES" ]; then sudo node ./.docker/before_build.js; else node ./.docker/before_build.js; fi
+    fi
+fi
+
 if [[ -f "angular.json" && -f "package.json" ]]; then
-    if [ ! -d "node_modules" ]; then
+    if [[ ! -d "node_modules" || $REINSTALL_MODULES == "YES" ]]; then
         if [ $PRODUCTION == "YES" ]; then sudo npm install; else npm install; fi
     fi
 
-    if [ ! -d "dist" ]; then
+    if [[ ! -d "dist" || $NG_REBUILD == "YES" ]]; then
         if [ $PRODUCTION == "YES" ]; then
             sudo ng build --configuration $NG_CONFIGURATION --output-path=dist/
         else
@@ -39,8 +48,10 @@ if [[ -f "angular.json" && -f "package.json" ]]; then
     fi
 fi
 
-if [ -f "docker.js" ]; then
-    if [ $PRODUCTION == "YES" ]; then sudo node docker.js; else node docker.js; fi
+if [ -d "./.docker" ]; then
+    if [ -f "./.docker/after_build.js" ]; then
+        if [ $PRODUCTION == "YES" ]; then sudo node ./.docker/after_build.js; else node ./.docker/after_build.js; fi
+    fi
 fi
 
 sudo /usr/sbin/httpd -DFOREGROUND
