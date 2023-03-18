@@ -1,0 +1,20 @@
+version: '3'
+name: docker_alpine_apache_angular
+services:
+  angular:
+    container_name: docker_alpine_apache_angular
+    image: mochrira/angular:15.2.3-apache
+    build: 
+      context: ./
+      dockerfile: dockerfile
+    volumes:
+      - ./app:/home/node/app
+    ports:
+      - 8080:80
+    networks:
+      - environment
+
+networks:
+  environment:
+    name: environment
+    external: true
