@@ -4,7 +4,9 @@ This repository provides to you docker images for developing apps with angular. 
 
 ```
 PRODUCTION=YES|NO (Default: NO)
+REINSTALL_MODULES=YES|NO (Default: NO)
 NG_CONFIGURATION=production|development (Default: development)
+NG_REBUILD=YES|NO (Default: NO)
 ```
 
 Available tags
