@@ -15,6 +15,9 @@ services:
       - environment
     environment:
       - PRODUCTION=$PRODUCTION
+      - REINSTALL_MODULES=$REINSTALL_MODULES
+      - NG_CONFIGURATION=$NG_CONFIGURATION
+      - NG_REBUILD=$NG_REBUILD
 
 networks:
   environment:
