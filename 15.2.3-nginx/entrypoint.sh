@@ -24,13 +24,13 @@ if [ ! -f "angular.json" ]; then
     fi
 
     if [ ! -f "dist/index.html" ]; then
-        if [ $PRODUCTION == "YES" ]; then sudo echo "${DEFAULT_FILE_CONTENT}" > dist/index.html; else echo "${DEFAULT_FILE_CONTENT}" > dist/index.html; fi
+        if [ $PRODUCTION == "YES" ]; then sudo -E echo "${DEFAULT_FILE_CONTENT}" > dist/index.html; else echo "${DEFAULT_FILE_CONTENT}" > dist/index.html; fi
     fi
 fi
 
 if [ -d "./.docker" ]; then
     if [ -f "./.docker/before_build.js" ]; then
-        if [ $PRODUCTION == "YES" ]; then sudo node ./.docker/before_build.js; else node ./.docker/before_build.js; fi
+        if [ $PRODUCTION == "YES" ]; then sudo -E node ./.docker/before_build.js; else node ./.docker/before_build.js; fi
     fi
 fi
 
@@ -50,7 +50,7 @@ fi
 
 if [ -d "./.docker" ]; then
     if [ -f "./.docker/after_build.js" ]; then
-        if [ $PRODUCTION == "YES" ]; then sudo node ./.docker/after_build.js; else node ./.docker/after_build.js; fi
+        if [ $PRODUCTION == "YES" ]; then sudo -E node ./.docker/after_build.js; else node ./.docker/after_build.js; fi
     fi
 fi
 
