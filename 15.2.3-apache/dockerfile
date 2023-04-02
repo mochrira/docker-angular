@@ -17,6 +17,9 @@ RUN ln -s /dev/stderr /var/log/apache2/error.log
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+COPY build.sh /build.sh
+RUN chmod +x /build.sh
+
 USER node
 WORKDIR /home/node/app
 ENTRYPOINT [ "/bin/sh", "/entrypoint.sh" ]

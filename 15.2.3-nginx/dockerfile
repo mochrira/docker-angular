@@ -6,16 +6,6 @@ RUN mkdir -p /etc/sudoers.d
 RUN echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node
 RUN chmod 0440 /etc/sudoers.d/node
 
-RUN echo \
-$'server { \n\
-    listen 80 default_server; \n\
-    listen [::]:80 default_server; \n\
-    try_files $uri $uri/ /index.html; \n\
-\n\
-    root /home/node/app/dist; \n\
-    index index.html; \n\
-}' > /etc/nginx/http.d/default.conf
-
 RUN npm install -g @angular/cli@15.2.3
 RUN npm cache verify
 
@@ -26,6 +16,9 @@ RUN ln -s /dev/stderr /var/log/nginx/error.log
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+COPY build.sh /build.sh
+RUN chmod +x /build.sh
 
 USER node
 WORKDIR /home/node/app

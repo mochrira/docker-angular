@@ -9,16 +9,21 @@ services:
       dockerfile: dockerfile
     volumes:
       - ./example:/home/node/app
+      - docker_ng_data:/var/www/html
     ports:
       - 8080:80
     networks:
       - environment
     environment:
-      - PRODUCTION=$PRODUCTION
-      - REINSTALL_MODULES=$REINSTALL_MODULES
-      - NG_CONFIGURATION=$NG_CONFIGURATION
-      - NG_REBUILD=$NG_REBUILD
+      - PRODUCTION=NO
+      - REINSTALL_MODULES=YES
+      - NG_CONFIGURATION=development
+      - NG_REBUILD=YES
       
+volumes:
+  docker_ng_data:
+    name: docker_ng_data
+
 networks:
   environment:
     name: environment
