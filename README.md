@@ -19,3 +19,24 @@ mochrira/angular:15.2.3-nginx
 For more tags, point to :
 
 [Our Angular Hub](https://hub.docker.com/r/mochrira/angular)
+
+## Production
+
+If you set PRODUCTION=YES, then htdocs are placed at `/var/www/html` instead of `/home/node/app/dist`. To reach zero down time while your container still compiling you can mount volume into `/var/www/html` directory. Here is yaml configuration examples
+
+```
+...
+services:
+    <your service name>:
+        ...
+        volumes:
+        - my_project_htdocs:/var/www/html
+        ...
+    ...
+...
+
+volumes:
+    my_project_htdocs:
+        name: my_project_htdocs
+...
+```
