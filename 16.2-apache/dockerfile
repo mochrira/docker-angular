@@ -1,0 +1,21 @@
+FROM node:lts-alpine
+
+RUN apk update && apk add --no-cache apache2 sudo \
+    && mkdir -p /etc/sudoers.d \
+    && echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node \
+    && chmod 0440 /etc/sudoers.d/node
+
+RUN npm install -g @angular/cli@16.2 \
+    && npm cache clean --force \
+    && npm cache verify
+
+RUN rm -f /var/log/apache2/* \
+    && ln -s /dev/stdout /var/log/apache2/access.log \
+    && ln -s /dev/stderr /var/log/apache2/error.log
+
+COPY httpd.conf /etc/apache2/httpd.conf
+COPY entrypoint.sh /entrypoint.sh
+
+USER node
+WORKDIR /home/node/app
+ENTRYPOINT [ "/bin/sh", "/entrypoint.sh"]

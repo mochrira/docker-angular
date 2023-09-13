@@ -1,0 +1,13 @@
+version: '3'
+name: docker_angular
+services:
+  angular:
+    container_name: docker_angular
+    image: mochrira/angular:16.2-apache
+    build: 
+      context: ./
+      dockerfile: dockerfile
+    volumes:
+      - ../example:/home/node/app
+    ports:
+      - 9090:80
